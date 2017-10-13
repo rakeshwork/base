@@ -1,0 +1,4 @@
+.ui-autocomplete-loading {
+background: white url("<?php echo $static_image_url, 'ui-anim_basic_16x16.gif'?>") right center no-repeat;
+
+}

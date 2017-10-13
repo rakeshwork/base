@@ -1,0 +1,13 @@
+
+@font-face {
+  font-family: 'MLTRevathy';
+  src: url('<?php echo $base_url;?>asset_new/common/fonts/MLRV0NTT.ttf');
+  src: url('<?php echo $base_url;?>asset_new/common/fonts/MLRV0NTT.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+.mal {
+  font-family: MLTRevathy;
+  font-weight: normal;
+  font-style: normal;
+  }

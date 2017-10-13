@@ -1,0 +1,22 @@
+
+#social-media-cnt a{
+    display:block;
+    float:right;
+    margin:8px 15px 0px 0px; /* 8px top margin, to align with collapsed menu bar in mobile view */
+}
+.twitter-bird {
+/*position: absolute;*/
+height: 24px;
+width: 29px;
+top: 0;
+left: 0;
+background: url("http://thanal.co.in/asset_new/common/img/tw_logo.png") no-repeat transparent;
+margin-right:19px;
+}
+.facebook-icon{
+height: 29px;
+width: 29px;
+top: 0;
+left: 0;
+background: url("http://thanal.co.in/asset_new/common/img/fb_logo.png") no-repeat transparent;    
+}

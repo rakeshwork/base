@@ -1,0 +1,62 @@
+
+AddDefaultCharset UTF-8
+
+#
+#    TUrn off short_open_tag
+#
+php_value short_open_tag 0
+
+
+#
+#    TUrn on the rewrite engine
+#
+RewriteEngine On
+
+
+#
+#    Make all www.example.com, redirect to example.com.
+#    A single way to access the website is required for
+#       1. better SEO
+#       2. to avoid problems in JS with same origin policy
+#
+#RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+#RewriteRule ^(.*)$ http://%1/$1 [L,R=301]
+#
+#
+
+
+
+#
+#    Execute only if PHP is running as a module of apache
+#
+<IfModule mod_php5.c>
+php_value upload_max_filesize 100M
+php_value post_max_size 106M
+</IfModule>
+
+#
+#    Error documents used to handle various error situations
+#
+ErrorDocument 401 default
+ErrorDocument 403 default
+ErrorDocument 404 default
+ErrorDocument 500 default
+
+
+#
+#    The Options directive controls which server features are available in a particular directory.
+#    
+#
+#    Prevent directory listings
+#Options All -Indexes
+
+
+#
+#    URL REWRITE FOR CODEIGNITER LINKS
+#    
+#
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond $1 !^(index\.php|asset|images|uploads|fonts|robots\.txt|phpinfo\.php|captcha|logs|sitemap\.xml|wp_iframe_home\.php)
+RewriteRule ^(.*)$ index.php?/$1 [L,QSA]
+
