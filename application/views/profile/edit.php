@@ -84,8 +84,9 @@
 
 		<div class="col-md-6">
 			<label for="dob">Date of birth</label>
-			<?php $sDefault = $oUser->birthday? $oUser->birthday : '';?>
+			<?php $sDefault = $oUser->birthday? date('Y-m-d', strtotime($oUser->birthday)) : '';?>
 			<input type="text" name="dob" class="form-control" value="<?php echo set_value('dob')? set_value('dob') : $sDefault;?>" id="datepicker"/>
+			<div class="help-block">YYYY-MM-DD format</div>
 		</div>
 	</div>
 

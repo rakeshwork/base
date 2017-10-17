@@ -15,6 +15,53 @@ class Developer extends CI_Controller {
 		}
 	}
 
+	function load() {
+
+		$this->load->helper('asset_load');
+
+		$this->mcontents['load_js'][] = 'js/validation/login.js';
+		$this->mcontents['load_js'][] = 'js/datepicker/profile_edit.js';
+		$this->mcontents['load_css'][] = 'common/css/captcha.css';
+		$this->mcontents['load_css'][] = 'common/css/malayalam.css';
+
+		$this->load->view('developer/index');
+	}
+
+//
+// 	function purifier() {
+//
+// 		$sSafeHTML = '';
+// 		$sUnsafeHTML = '
+// 		<html>
+// 		Latest comment:
+// 		<script>...</script>
+// 		</html>
+// 		';
+//
+// 		$sSafeHTML = safeHTML($sUnsafeHTML, false, '', true);
+//
+// p($sUnsafeHTML);
+// p($sSafeHTML);
+// exit;
+// 		p(htmlentities($sUnsafeHTML));
+// 		p(htmlentities($sSafeHTML));
+// 	}
+
+	//
+	// function token() {
+	//
+	// 	$this->load->model('token_model');
+	// 	$sPurpose = 'password_recovery';
+	// 	$sUniqueIdentification = 57874435;
+	//
+	// 	$oToken = $this->token_model->generateToken($sPurpose, 57874435, 20, '', false, true);
+	//
+	// 	p($oToken);
+	// 	$bIsValid = $this->token_model->isValidToken($oToken->token, $sPurpose, $sUniqueIdentification);
+	// 	p('IS VALID ? ' . ($bIsValid ? 'true' : 'false') );
+	//
+	// }
+
 	// function profile_picture_test() {
 	//
 	// 	$iAccountNo = 57874435;

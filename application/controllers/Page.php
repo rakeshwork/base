@@ -15,6 +15,12 @@ class Page extends CI_Controller {
 		$this->load->model('sitepage_model');
 
         $this->mcontents['sCurrentMainMenu']    = 'sitepages';
+
+		list($this->mcontents['aPageStatuses'], $this->mcontents['aPageStatusTitles'])
+			= $this->data_model->getDataItem('page_statuses', array('id-name', 'id-title'));
+
+		$this->mcontents['aPageStatusesFlipped'] = array_flip($this->mcontents['aPageStatuses']);
+
 	}
 
 
@@ -25,9 +31,16 @@ class Page extends CI_Controller {
 
 	public function view($sPageName='') {
 
-		if( !$this->mcontents['oPage'] = $this->sitepage_model->getSingleSitepage($sPageName) ) {
+		if( ! $this->mcontents['oPage'] = $this->sitepage_model->getSingleSitepage($sPageName) ) {
 
 			redirect( c('default_controller') );
+		}
+
+		// we show only pages with active status
+		if( $this->mcontents['oPage']->status != $this->mcontents['aPageStatusesFlipped']['active'] ) {
+
+			sf('error_message', 'Sorry, The content you are looking for cannot be found.');
+			redirect( $this->config->item('default_controller') );
 		}
 
         $this->mcontents['page_title']          = $this->mcontents['oPage']->title;
@@ -51,7 +64,6 @@ class Page extends CI_Controller {
 		$this->mcontents['title']						= 'List Sitepages';
 		$this->mcontents['selected_tab']				= 'sitepage';
 		$this->mcontents['page_heading']				= 'List Sitepages';
-		//$this->mcontents['load_css'][] = 'grid.css';
 
 		$iTotal											= $this->sitepage_model->getAllSitepages ('count');
 		$this->mcontents ['sitepage_details'] 			= $this->sitepage_model->getAllSitepages ('list', array(), $iOffset, c('sitepage_per_page'));
@@ -65,7 +77,6 @@ class Page extends CI_Controller {
 		$this->aPaginationConfiguration['per_page'] 	= c('sitepage_per_page');
 		$this->pagination->customizePagination();
 		$this->mcontents['iOffset'] = $iOffset;
-		//$this->mcontents['load_css'][] = 'pagination.css';
 		$this->pagination->initialize($this->aPaginationConfiguration);
 		$this->mcontents['sPagination'] = $this->pagination->create_links();
 		/* Pagination - End*/
@@ -127,14 +138,26 @@ class Page extends CI_Controller {
 			if( isset($_POST) && !empty($_POST) ) {
 
 				$this->__set_edit_validation_rules();
-				if($this->form_validation->run() == TRUE) {
+
+				$bIsStatusVerified = false;
+				if( array_key_exists(safeText('status'), $this->mcontents['aPageStatuses']) ) {
+					$bIsStatusVerified = true;
+				}
+
+				$bFormValidationPassed = false;
+				if($this->form_validation->run() === TRUE) {
+					$bFormValidationPassed = true;
+				}
+
+				if( $bFormValidationPassed && $bIsStatusVerified ) {
 
 					$aDetails = $this->__get_edit_values();
 
-					//p($aDetails);exit;
-
 					$this->sitepage_model->updateSitepage($page_id, $aDetails);
+
+
 					$this->session->set_flashdata ('success_message', 'Successfully updated sitepage');
+
 					redirect('page/edit/'.$page_id);
 				}
 			}
@@ -145,9 +168,6 @@ class Page extends CI_Controller {
 		}
 
 		requireTextEditor();
-
-		//$this->mcontents['load_css'][] = 'forms/sitepage_edit.css';
-		//$this->mcontents['load_js'][] = 'tinymce_perpage/edit_sitepage.js';
 
 		loadAdminTemplate('page/edit_sitepage');
 	}
@@ -164,7 +184,11 @@ class Page extends CI_Controller {
 	function __set_edit_validation_rules () {
 
 		$this->load->library ("form_validation");
-		$this->form_validation->set_rules('title', 'Title','trim'); // NOT REQUIRED. in the case of static contents . will see
+
+		// title is NOT a REQUIRED field . Since page section may be used to show other static contents on adhoc basis
+		$this->form_validation->set_rules('title', 'Title','trim');
+
+		$this->form_validation->set_rules('status', 'Status','required');
 		$this->form_validation->set_rules('page_content1','Content','trim');
 		$this->form_validation->set_rules('page_content2','Content','trim');
 		$this->form_validation->set_rules('page_content3','Content','trim');
@@ -186,6 +210,7 @@ class Page extends CI_Controller {
 			'content2'	=> safeHtml('page_content2', false, 'post', false, $aHtmlPurifierAdditionalConfig),
 			'content3'	=> safeHtml('page_content3', false, 'post', false, $aHtmlPurifierAdditionalConfig),
 			'show'		=> safeText('show'),
+			'status'		=> safeText('status'),
 			'updated_date'	=> date('Y-m-d H:i:s'),
 		);
 	}

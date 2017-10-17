@@ -409,6 +409,7 @@
 				$aFiles = array_diff($aFiles, $CI->mcontents['avoid_'.$sType]);
 			}
 
+// p($aFiles);
 
 			//make the filename for the combination of these files
 			$sParsedFilename = $CI->mcontents['uri_1'] . $CI->mcontents['uri_2'] . md5( str_replace('.','', implode('', $aFiles)) ). '.php';
@@ -889,27 +890,6 @@
 	}
 
 
-	/**
-	 * This function will inlcude the necessary files that are needed
-	 * for tabbed displayed to work in a page
-	 *
-	 * no longer needed, since bootstrap includes tabs functionality by default!
-	 *
-	 */
-	function requireTabbedContents(){
-
-		$CI = &get_instance ();
-
-		$CI->mcontents['load_js'][] = 'jquery/jquery.ui.core.min.js';
-		$CI->mcontents['load_js'][] = 'jquery/jquery.ui.widget.min.js';
-		$CI->mcontents['load_js'][] = 'jquery/jquery.ui.tabs.js';
-
-			//this is wrong. only one needs to be used
-		//$CI->mcontents['load_css'][] = 'jquery-ui.css';
-		//$CI->mcontents['load_css'][] = 'jquery-ui-1.8.16.custom.css';
-
-	}
-
 
 	/**
 	 *
@@ -943,37 +923,6 @@
         */
 
         switch( $aConfig['editor'] ) {
-            case 'bootstrap-wysihtml5' :
-                $CI->mcontents['load_css'][]    = 'text-editor/bootstrap-wysihtml5/bootstrap-wysihtml5.css';
-                /*
-                $CI->mcontents['load_js'][]     = 'text-editor/bootstrap-wysihtml5/wysihtml5-0.3.0.min.js';
-                $CI->mcontents['load_js'][]     = 'text-editor/bootstrap-wysihtml5/bootstrap-wysihtml5-0.0.2.min.js';
-                */
-
-                $CI->mcontents['load_js'][]     = 'text-editor/bootstrap-wysihtml5/wysihtml5-0.3.0.js';
-                $CI->mcontents['load_js'][]     = 'text-editor/bootstrap-wysihtml5/bootstrap-wysihtml5-0.0.2.js';
-
-
-                //$CI->mcontents['load_js'][]     = 'text-editor/bootstrap-wysihtml5/bootstrap-wysihtml5-0.0.2.min.js';
-
-                break;
-
-            case 'tinymce' :
-
-                $CI->load->config('wysiwyg');
-
-                $CI->mcontents['load_js'][] = 'tinymce/jscripts/tiny_mce/tiny_mce.js';
-
-                $aConfig = array_merge($CI->config->item('tinymce_default_settings'), $aConfig);
-                foreach($aConfig AS $key=>$value){
-                    $CI->mcontents['load_js']['data'][$key] = $value;
-                }
-                $CI->mcontents['load_js']['data']['tinymce_button_collection_1'] = $CI->config->item('tinymce_button_collection_1');
-                /*
-                $CI->mcontents['load_js']['data']['css_url'] = $CI->config->item('css_url');
-                */
-
-                break;
 
             case 'tinymce4' :
 
@@ -1027,28 +976,6 @@
     }
 
 
-	/**
-	 *
-	 * Help load tiny mce for the page which is calling this function
-	 *
-	 */
-	function requireTinyMce_old($aConfig=array()){
-
-		$CI = &get_instance ();
-
-		$CI->load->config('wysiwyg');
-
-		$aConfig = array_merge($CI->config->item('tinymce_default_settings'), $aConfig);
-
-		foreach($aConfig AS $key=>$value){
-			$CI->mcontents['load_js']['data'][$key] = $value;
-		}
-		$CI->mcontents['load_js'][] = 'tinymce/jscripts/tiny_mce/jquery.tinymce.js';
-
-		$CI->mcontents['load_js']['data']['css_url'] = $CI->config->item('css_url');
-		$CI->mcontents['load_js']['data']['tinymce_button_collection_1'] = $CI->config->item('tinymce_button_collection_1');
-	}
-
 
 	/**
 	 *
@@ -1065,12 +992,6 @@
         $aConfig = array_merge($aDefault, $aConfig);
 
         switch( $sPopUp ) {
-            case 'fancybox' :
-                $CI->mcontents['load_js'][]     = 'fancybox/jquery.fancybox-1.3.4.pack.js';
-                $CI->mcontents['load_js'][]     = 'fancybox/fancybox_common.js';
-                $CI->mcontents['load_css'][]    = 'fancybox/jquery.fancybox-1.3.4.css';
-                $CI->mcontents['load_css']['data']['fancybox_image_url'] = c('css_url').'fancybox/images/';
-                break;
 
             case 'fancybox2' :
                 $CI->mcontents['load_js'][]     = 'fancybox2/jquery.fancybox.pack.js';
@@ -1086,27 +1007,6 @@
         }
 
 	}
-
-	/**
-	 *
-	 * Load the files required for Datatable to work
-	 *
-	 */
-	function requireDataTable_DEPRECATED() {
-
-		/**
-		 * USE requireDataTable_new() instead
-		 */
-		$CI = & get_instance();
-
-
-		$CI->mcontents['load_js'][] = 'datatable/jquery.dataTables.js';
-		$CI->mcontents['load_js'][] = 'datatable/common_customizations_datatable.js';
-		$CI->mcontents['load_css'][] = 'datatables/demo_table.css';
-		$CI->mcontents['load_css'][] = 'tablesorter/tablesorter.css';
-
-	}
-
 
 	/**
 	 *
@@ -1329,7 +1229,8 @@
         $CI->mcontents['load_js'][] = 'jquery/jquery.blockui.js';
         $CI->mcontents['load_js'][] = 'fancybox2/per_page/generic_contact_me.js';
 
-        $CI->mcontents['load_js'][] 	= 'jquery/jquery.validate.min.js';
+		// we need front end validation for this page.
+		requireFrontEndValidation();
         $CI->mcontents['load_js'][] 	= 'validation/generic_contact_me.js';
 
         $CI->mcontents['iContactPersonAccNo'] 	= $iAccountNo;
@@ -1467,15 +1368,6 @@
 
 
 
-	function requireDatePicker() {
-
-		$CI = &get_instance ();
-
-		//$CI->mcontents['load_js'][] 	= 'jquery/ui-1.10.3/jquery.ui.core.min.js';
-		//$CI->mcontents['load_js'][] 	= 'jquery/ui-1.10.3/jquery.ui.datepicker.min.js';
-		//$CI->mcontents['load_css'][] 	= 'jquery-ui-1.10.3.custom.min.css';
-	}
-
 
 
 	/**
@@ -1490,7 +1382,7 @@
 	function hasAccess( $aAllowedUserTypes, $sRedirectTo = '' ) {
 
 		$CI = & get_instance();
-		
+
 
 		$iUserType = $CI->session->userdata('USER_TYPE');
 
@@ -1627,13 +1519,18 @@
 
 
 
-
-	function requireValidation($sFile=''){
+	/**
+	 * when we need validation in a page, this fucntion is called.
+	 *
+	 * It will load the required files
+	 * @param  string $sFile [description]
+	 * @return [type]        [description]
+	 */
+	function requireFrontEndValidation() {
 
 		$CI = & get_instance();
 
-		$CI->mcontents['load_js'][] = 'jquery/jquery.validate.min.js';
-		$CI->mcontents['load_js'][] = $sFile;
+		$CI->mcontents['load_js'][] = 'jqueryvalidation/1.17.0/dist/jquery.validate.min.js';
 
 	}
 
@@ -1671,47 +1568,4 @@
 
 		}
 
-	}
-
-
-	function getQuestionAnswer($field_name, $aAnswerIds, $sSearchBy='field_name',$bTesting = false){
-		$CI = & get_instance();
-
-		$CI->load->model('question_model');
-
-		$questions_master_data = $CI->question_model->getQuestionMasterData();
-
-		$aQuestionId = array_column($questions_master_data, $sSearchBy);
-		// if($bTesting) {
-		// p($aQuestionId);
-		// }
-		$iQuestionId = array_search( $field_name, $aQuestionId) + 1;
-		// if($bTesting) {
-		// p($iQuestionId);
-		// }
-
-		$aAnswers	= [];
-		if(!is_array($aAnswerIds)){
-			$aAnswerIds = array( 0 => $aAnswerIds);
-		}
-		$aAnswerOptions	= $questions_master_data[$iQuestionId]['answer_options'];
-		foreach($aAnswerOptions as $aAnswerOption){
-			if(is_array($aAnswerIds) && in_array($aAnswerOption['value'], $aAnswerIds)){
-				array_push($aAnswers, $aAnswerOption['title']);
-			}
-		}
-		return implode(', ', $aAnswers);
-	}
-
-	function getQuestionText($field_name, $sSearchBy='field_name', $bTesting = false){
-		$CI = & get_instance();
-		$CI->load->model('question_model');
-
-		$questions_master_data = $CI->question_model->getQuestionMasterData();
-
-		$aQuestionId = array_column($questions_master_data, $sSearchBy);
-		if($bTesting) {p($aQuestionId);}
-		$iQuestionId = array_search( $field_name, $aQuestionId) + 1;
-
-		return $questions_master_data[$iQuestionId]['title'];
 	}

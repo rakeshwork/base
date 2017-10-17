@@ -83,9 +83,6 @@ $config['config_variables_for_js_file'] = array(
  */
 $config['default_css_files'] = array(
 
-                            'style.css',
-                            'css_helper.css',
-                            //'common/css/social_media.css',
                         );
 
 
@@ -176,6 +173,10 @@ $config['website_official_name']	= '';
 //$config['logo_image_name']          = 'logo.jpg';
 $config['logo_image_name']          = 'logo.jpg';
 
+$config['no_reply_email_id']    = 'noreply@' . $config['website_domain_name'];
+$config['no_reply_email_from']  = 'No Reply';
+$config['accounts_email_id']    = 'account@' . $config['website_domain_name']; // username/ password recovery emails are sent from this email id
+$config['accounts_email_from']  = 'Accounts - ' . $config['website_title'];
 
 /*
 |--------------------------------------------------------------------------
@@ -219,10 +220,7 @@ $config['email_template_default_variables'] = array(
     'email_logo_url'    => $config['static_image_url'] . $config['logo_image_name'],
 );
 
-$config['no_reply_email_id']    = 'noreply@' . $config['website_domain_name'];
-$config['no_reply_email_from']  = 'No Reply';
-$config['accounts_email_id']    = 'account@' . $config['website_domain_name']; // username/ password recovery emails are sent from this email id
-$config['accounts_email_from']  = 'Accounts - ' . $config['website_title'];
+
 
 
 $config['subscription_email_from']  = 'Email Subscription';

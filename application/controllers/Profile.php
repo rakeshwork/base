@@ -116,7 +116,6 @@ class Profile extends CI_Controller {
 	 */
 	public function edit($iAccountNo=0) {
 
-
 		$bIsAdmin = false;
 
 		if( ! $this->authentication->is_user_logged_in(false, '', false) ) {
@@ -252,18 +251,16 @@ class Profile extends CI_Controller {
 		// the various JS and CSS files that are required
 
 		//datepicker
-		$this->mcontents['load_js'][] = 'datepicker/signup.js';
+		$this->mcontents['load_js'][] = 'datepicker/profile_edit.js';
 
-		//form validation
-		$this->mcontents['load_js'][] = 'jquery/jquery.validate.min.js';
-
+		// we need front end validation for this page.
+		requireFrontEndValidation();
 		$this->mcontents['load_js'][] = 'validation/profile_edit.js';
 
 		$this->mcontents['load_js']['data']['iAccountNo'] = $iAccountNo;
 
         // common functionality
 		$this->mcontents['load_js'][] = 'edit_profile.js';
-
 
 		// get the text editor
 		requireTextEditor(array('profile' => 'content_editor'));

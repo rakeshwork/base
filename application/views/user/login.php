@@ -13,10 +13,10 @@
 			<label>Password</label>
 			<input type="password" id="password" name="password" size="30" class="form-control"/>
 		</div>
-		
+
 		<div class="form-group">
 			<div class="col-md-6">
-				<a href="<?php echo c('base_url').'account/recovery';?>" >Forgot Username/ Password</a>
+				<a href="<?php echo c('base_url').'account/password_recovery';?>" >Forgot Password</a>
 			</div>
 			<div class="col-md-6">
 				<input type="submit" name="login" class="btn btn-default pull-right" id="submit_btn btn-default" value="Login"/>

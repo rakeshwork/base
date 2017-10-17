@@ -81,7 +81,8 @@ class User extends CI_Controller {
 		}
 
 
-		$this->mcontents['load_js'][] 	= 'jquery/jquery.validate.min.js';
+		// we need front end validation for this page.
+		requireFrontEndValidation();
         $this->mcontents['load_js'][] = 'validation/login.js';
 
 		loadTemplate('user/login');
@@ -235,7 +236,8 @@ class User extends CI_Controller {
 		}
 
 
-		$this->mcontents['load_js'][] 	= "jquery/jquery.validate.min.js";
+		// we need front end validation for this page.
+		requireFrontEndValidation();
 		$this->mcontents['load_js'][] 	= "validation/register.js";
 
 		$this->mcontents['aGendersFlipped'] 	= array_flip($this->mcontents['aGenders']);
@@ -348,7 +350,8 @@ class User extends CI_Controller {
 		}
 
 
-		$this->mcontents['load_js'][] 	= "jquery/jquery.validate.min.js";
+		// we need front end validation for this page.
+		requireFrontEndValidation();
 		$this->mcontents['load_js'][] 	= "validation/register.js";
 
 
@@ -381,17 +384,20 @@ class User extends CI_Controller {
 			redirect('home');
 		}
 
-		$this->load->model('common_model');
-		$aResult = $this->common_model->isValidToken($account_act_code, 'account_activation');
-		$aTokenStatus = c('token_status');
+		$this->load->model('token_model');
+		$aResult = $this->token_model->isValidToken($account_act_code, 'account_activation');
+
+		$aTokenStatuses = $this->data_model->getDataItem('token_purposes');
+		$aTokenStatusesFlipped = array_flip($aTokenStatuses);
+
 
 		if( $aResult['status'] != $aTokenStatus['valid'] ) {
 
 			//find the reason why this token is not valid
-			if( $aResult['status'] == $aTokenStatus['invalid'] ) {
+			if( $aResult['status'] == $aTokenStatusesFlipped['invalid'] ) {
 
 				sf('error_message', 'Invalid Link. Please contact out support team');
-			} elseif($aResult['status'] == $aTokenStatus['expired']) {
+			} elseif($aResult['status'] == $aTokenStatusesFlipped['expired']) {
 
 				sf('error_message', 'This link has expired. Click <a class="highlight1" href="'.c('base_url').'user/resend_account_activation/'.$account_act_code.'">here</a> to get another confirmation email');
 			}
@@ -404,7 +410,7 @@ class User extends CI_Controller {
 			if(true === $this->account_model->activateAccount($aResult['oToken']->user_id)){
 
 				//delete the token
-				$this->common_model->deleteToken($aResult['oToken']->id);
+				$this->token_model->deleteToken($aResult['oToken']->id);
 
 
 				if(!$this->authentication->makeLogin($aResult['oToken']->user_id)){
@@ -454,16 +460,19 @@ class User extends CI_Controller {
 	 */
 	function resend_account_activation($sToken) {
 
+		$this->load->model('token_model');
+
 		//see if the token is an expired one
-		$aResult = $this->common_model->isValidToken($sToken, 'account_activation');
+		$aResult = $this->token_model->isValidToken($sToken, 'account_activation');
 		$aTokenStatus = c('token_status');
 
 		if($aResult['status'] == $aTokenStatus['expired']){
 
 			$oToken = $aResult['oToken'];
 			$oUser = $this->user_model->getUserBy('id', $oToken->user_id);
+
 			//confirmation email to user
-			$account_activation_code = $this->common_model->generateToken('account_activation', $oUser->id);
+			$account_activation_code = $this->token_model->generateToken('account_activation', $oUser->id);
 			$arr_email['name']				= $oUser->first_name . ' ' . $oUser->last_name;
 			$arr_email['activation_url']	= site_url('user/account_activation/'.$account_activation_code);
 			$arr_email['help_url']			= site_url('help');
@@ -629,7 +638,6 @@ class User extends CI_Controller {
 		$this->aPaginationConfiguration['uri_segment'] 	= 6;
 		$this->pagination->customizePagination();
 		$this->mcontents['iOffset'] = $iOffset;
-		//$this->mcontents['load_css'][] = 'pagination.css';
 		$this->pagination->initialize($this->aPaginationConfiguration);
 		$this->mcontents['sPagination'] = $this->pagination->create_links();
 		/* Pagination - End*/

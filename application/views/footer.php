@@ -1,18 +1,11 @@
 
+</div>
 
 
-</div>
-</div>
-</div>
-</section>
-
-
-</div>
 <div style="height:50px;">  <div>
-<?php /*?>
-<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
-<?php */?>
-<script type="text/javascript" src="<?php echo $this->config->item('asset_url');?>jquery/jquery-1.11.1.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 <!-- Latest compiled and minified JavaScript -->
 <?php /*?>
@@ -22,9 +15,6 @@
 
 
 <?php echo load_files('js');?>
-
-
-
 
 </body>
 </html>

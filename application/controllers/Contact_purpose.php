@@ -52,7 +52,6 @@ class Contact_purpose extends CI_Controller {
 		$this->aPaginationConfiguration['uri_segment'] 	= 4;
 		$this->pagination->customizePagination();
 		$this->mcontents['iOffset'] 					= $iOffset;
-		//$this->mcontents['load_css'][] 					= 'pagination.css';
 		$this->pagination->initialize($this->aPaginationConfiguration);
 		$this->mcontents['sPagination'] 				= $this->pagination->create_links();
 		/* Pagination - End*/
@@ -119,7 +118,8 @@ class Contact_purpose extends CI_Controller {
         $this->mcontents['aEmailTemplates'] = $this->_get_email_templates_dropdown();
 
 
-        $this->mcontents['load_js'][]   = 'jquery/jquery.validate.min.js';
+		// we need front end validation for this page.
+		requireFrontEndValidation();
         $this->mcontents['load_js'][]   = 'validation/contact_us/add_purpose.js';
 
         loadAdminTemplate('contact_us/purpose/add_purpose');
@@ -206,7 +206,8 @@ class Contact_purpose extends CI_Controller {
         // get the email templates drop down
         $this->mcontents['aEmailTemplates'] = $this->_get_email_templates_dropdown();
 
-        $this->mcontents['load_js'][]   = 'jquery/jquery.validate.min.js';
+		// we need front end validation for this page.
+		requireFrontEndValidation();
         $this->mcontents['load_js'][]   = 'validation/contact_us/add_purpose.js';
 
         loadAdminTemplate('contact_us/purpose/edit_purpose');

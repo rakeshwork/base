@@ -7,7 +7,7 @@
 * Easily use multiple purifier configurations.
 *
 * @author Tyler Brownell
-* @copyright Copyright © 2011 Blue Fox Studio
+* @copyright Copyright ï¿½ 2011 Blue Fox Studio
 * @license http://bluefoxstudio.ca/license.html
 *
 * @access public
@@ -15,64 +15,60 @@
 * @param string
 * @return string or array
 */
-if (! function_exists('html_purify'))
-{
-function html_purify($dirty_html, $config = FALSE, $aCustomConfiguration=array())
-{
-require_once APPPATH . 'third_party/htmlpurifier-4.4.0-standalone/HTMLPurifier.standalone.php';
+if (! function_exists('html_purify')) {
 
-if (is_array($dirty_html))
-{
-foreach ($dirty_html as $key => $val)
-{
-$clean_html[$key] = html_purify($val);
-}
-}
+    function html_purify($dirty_html, $config = FALSE, $aCustomConfiguration=array()) {
 
-else
-{
-switch ($config)
-{
-case 'comment':
-$config = HTMLPurifier_Config::createDefault();
-$config->set('Core.Encoding', 'utf-8');
-$config->set('HTML.Doctype', 'XHTML 1.0 Strict');
-$config->set('HTML.Allowed', 'p,a[href|title],abbr[title],acronym[title],b,strong,blockquote[cite],code,em,i,strike');
-$config->set('AutoFormat.AutoParagraph', TRUE);
-$config->set('AutoFormat.Linkify', TRUE);
-$config->set('AutoFormat.RemoveEmpty', TRUE);
-break;
+        //require_once APPPATH . 'third_party/htmlpurifier-4.4.0-standalone/HTMLPurifier.standalone.php';
+        require_once APPPATH . 'third_party/htmlpurifier-4.9.3-standalone/HTMLPurifier.standalone.php';
 
-case FALSE:
-$config = HTMLPurifier_Config::createDefault();
-$config->set('Core.Encoding', 'utf-8');
-//$config->set('HTML.Doctype', 'XHTML 1.0 Strict');
-$config->set('HTML.Doctype', 'XHTML 1.0 Transitional');
-break;
+        if (is_array($dirty_html)) {
+                foreach ($dirty_html as $key => $val) {
 
-default:
-show_error('The HTMLPurifier configuration labeled "' . htmlentities($config, ENT_QUOTES, 'UTF-8') . '" could not be found.');
-}
+                $clean_html[$key] = html_purify($val);
+            }
+        } else {
 
-$config->set('Attr.AllowedFrameTargets', array('_blank'));
+            switch ($config) {
+                case 'comment':
+                    $config = HTMLPurifier_Config::createDefault();
+                    $config->set('Core.Encoding', 'utf-8');
+                    $config->set('HTML.Doctype', 'XHTML 1.0 Strict');
+                    $config->set('HTML.Allowed', 'p,a[href|title],abbr[title],acronym[title],b,strong,blockquote[cite],code,em,i,strike');
+                    $config->set('AutoFormat.AutoParagraph', TRUE);
+                    $config->set('AutoFormat.Linkify', TRUE);
+                    $config->set('AutoFormat.RemoveEmpty', TRUE);
+                    break;
 
-//p($config);
+                case FALSE:
+                    $config = HTMLPurifier_Config::createDefault();
+                    $config->set('Core.Encoding', 'utf-8');
+                    //$config->set('HTML.Doctype', 'XHTML 1.0 Strict');
+                    $config->set('HTML.Doctype', 'XHTML 1.0 Transitional');
+                    break;
 
-if( $aCustomConfiguration ) {
-    
-    //This is not working!
-    /*foreach($aCustomConfiguration AS $sKey => $value){
-        $config->set($sKey, $value);
-    } */   
-}
+                default:
+                    show_error('The HTMLPurifier configuration labeled "' . htmlentities($config, ENT_QUOTES, 'UTF-8') . '" could not be found.');
+            }
+
+            $config->set('Attr.AllowedFrameTargets', array('_blank'));
 
 
-$purifier = new HTMLPurifier($config);
-$clean_html = $purifier->purify($dirty_html);
-}
+            if( $aCustomConfiguration ) {
 
-return $clean_html;
-}
+                //This is not working!
+                /*foreach($aCustomConfiguration AS $sKey => $value){
+                    $config->set($sKey, $value);
+                } */
+            }
+
+
+            $purifier = new HTMLPurifier($config);
+            $clean_html = $purifier->purify($dirty_html);
+        }
+
+        return $clean_html;
+    }
 }
 
 /* End of htmlpurifier_helper.php */

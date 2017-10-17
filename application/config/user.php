@@ -113,33 +113,3 @@ $config['profile_pic_upload_settings'] = array(
 |
 |
 */
-
-$config['account_activation_token_code_length'] = 20;
-$config['account_activation_token_life'] = 86400;//seconds = 1 day
-
-$config['password_recovery_token_code_length'] = 8;
-$config['password_recovery_token_life'] = 86400;//seconds = 1 day
-
-$config['username_recovery_token_code_length'] = 8;
-$config['username_recovery_token_life'] = 86400;//seconds = 1 day
-
-$config['token_status'] = array(
-                            'valid'             => 1,
-                            'invalid'           => 2,
-                            'expired'           => 3,
-                            'invalid_purpose'   => 4,
-                        );
-
-$config['user_mobile_verification_status'] = array(
-                            'no_sms_verification_done'  => 1,
-                            'sms_sent'           		=> 2,
-                            'sms_verified'           	=> 3,
-                        );
-
-$config['user_mobile_verification_status_title'] = array(
-                            1 => 'No SMS verification done',
-							2 => 'sms_sent',
-							3 => 'sms_verified',
-                        );
-
-$config['mobile_num_verification_token_time_to_live'] = 900; //900 seconds = 15 mins

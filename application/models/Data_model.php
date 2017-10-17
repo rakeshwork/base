@@ -27,8 +27,12 @@ class Data_model extends CI_Model{
 			'user_salutations' 	=> 'user_salutations',
 			'online_via' 		=> 'authenticating_sources',
 			'enquiry_purposes' 	=> 'enquiry_purposes',
+			'page_statuses' 	=> 'page_statuses',
+			'token_statuses' 	=> 'token_statuses',
+			'token_purposes' 	=> 'token_purposes',
 			'enquiry_purpose_statuses' 	=> 'enquiry_purpose_statuses',
 			'profile_picture_sources' 	=> 'profile_picture_sources',
+
 
 		);
 

@@ -22,6 +22,12 @@
 		<div class="help-block">(How many columns to be shown in the front end)</div>
 	</div>
 
+
+	<div class="form-group">
+		<label for="status">Status</label>
+		<?php echo form_dropdown('status', $aPageStatusTitles, $sitepage_details->status ? $sitepage_details->status : set_value('status'), 'class="form-control"');?>
+	</div>
+
 	<div class="form-group">
 		<label for="page_content1">Content 1</label>
 		<textarea name="page_content1" class="form-control text-editor" rows="10"><?php echo $sitepage_details->content1;?></textarea>

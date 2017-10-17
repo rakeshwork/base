@@ -2,7 +2,7 @@
 /**
  * generate a captcha
  * do what is required to get captcha for a form
- * 
+ *
  * NOTE : Core Captcha helper was edited
  * Function Name: create_captcha()
  * Line numbers : 44, 114, 193, 199, 235, 239
@@ -11,17 +11,17 @@
  * @return array
  */
 function getCaptcha($aConfig=array(), $bHtml=false) {
-	
+
 	$CI = & get_instance();
-	
+
 	$CI->load->config('captcha');
-	
+
 	//if there was some config option set by the user, then save it. will be needed when we refresh captcha
 	// make sure to delete this from session when deleting captcha
 	if( $aConfig ) {
 		ss( 'custom_captcha_settings', serialize($aConfig));
 	}
-	
+
 	$vals = array_merge(array(
 					    'word' 					=> '',
 					    'img_path' 				=> $CI->config->item('base_path') . 'captcha/',
@@ -39,26 +39,20 @@ function getCaptcha($aConfig=array(), $bHtml=false) {
 
 					    //p($vals);exit;
 	$aCaptcha = create_captcha($vals);
-	
-	//p($aCaptcha);
-	//exit;
-	
-	
-	
+
+
 	//store the word to the session
 	$CI->session->set_userdata($aCaptcha);
-	
-	//p( s('word') );
-	
+
+
 	//load necessary JS/ CSS files
-	//$CI->mcontents['load_js'][] = 'jquery.livequery.js';
 	$CI->mcontents['load_js'][] = 'captcha.js';
 	$CI->mcontents['load_css'][] = 'captcha.css';
 	$CI->mcontents['load_js']['data']['captcha_container_id'] = $vals['captcha_container_id'];
-	
+
 	if($bHtml){
 		//fetch the whole captcha block of the form
-		return $CI->load->view('captcha', $aCaptcha, true);		
+		return $CI->load->view('captcha', $aCaptcha, true);
 	} else {
 		return $aCaptcha;
 	}
@@ -71,11 +65,11 @@ function getCaptcha($aConfig=array(), $bHtml=false) {
  * @return unknown
  */
 function getCaptchaView($aConfig=array()){
-	
+
 	$aData = getCaptcha($aConfig);
-	
+
 	$CI = &get_instance();
-	
+
 	return $CI->load->view('captcha', $aData, true);
 }
 
@@ -85,45 +79,40 @@ function getCaptchaView($aConfig=array()){
  * Check if the captcha entered by the user matches the one in our session
  */
 function isValidCaptcha(){
-	
+
 	$CI = &get_instance();
 	$bReturn = false;
-	
+
 	$CI->load->config('captcha');
-	//var_dump(c('captcha_case_sensitive'));
-	//exit;
-	
+
+
 	$sFnName = c('captcha_case_sensitive') ? 'strcmp' : 'strcasecmp';
-	
-	//p('POST : '.$CI->input->post('captcha'));
-	//p( 'session : '.s('word') );
-	//p( $CI->session->userdata );
-	//exit;
-	
+
+
 	if( 0 === $sFnName($CI->input->post('captcha'), s('word')) ) {
-		
+
 		$bReturn = true;
-		
+
 	}
-	
+
 	destroyCaptcha();
-	
+
 	return $bReturn;
-	
+
 }
 
 /**
  * destroy the current captcha information in the session
  */
 function destroyCaptcha(){
-	
+
 	$CI = &get_instance();
-	
+
 	$aCapthaData = array('captcha_word', 'captcha_time', 'captcha_image');//same keys as in the captcha_helper
-	
+
 	//unset from session, any custom settings used for this captcha
 	us('custom_captcha_settings');
-	
+
 	$CI->session->unset_userdata($aCapthaData);
 }
 
@@ -156,7 +145,7 @@ function isValidatedCaptcha(){
 	if( $CI->session->userdata('validated_captcha_code') == $CI->input->post('validated_captcha_code') ){
 		$bReturn = true;
 	}
-	
+
 	$CI->session->unset_userdata('validated_captcha_code');
 	return $bReturn;
 }
