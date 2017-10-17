@@ -521,12 +521,14 @@
 			$bMinify = false; // MINIFY CODE IS NOT WORKING
 			$aSearch = array("\r", "\r\n", "\n", "\t");
 
+// p($sParsedFileFullPath);
+
 			// append content of each file into the single file | Done this way, so that very large files will not cause memory to run out
 			foreach ($aFiles as $file ) {
 
 				//$file_to_open = $sFilePath . $file;
 				$file_to_open = $sAssetPath . $file;
-				//p($file_to_open);
+				// p($file_to_open);
 				$file_contents = file_get_contents($file_to_open,true);
 
 				if($bMinify){

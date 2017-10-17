@@ -24,8 +24,8 @@ $config['asset_url'] 	    = $config['base_url'].'asset/';
 $config['font_path'] 	    = $config['asset_path'].'fonts/';
 
 
-$config['current_theme']    = 'misty';
-$config['current_theme_path_segment'] = 'css/' . ($config['current_theme'] ? 'themes/' . $config['current_theme'].'/css/' : '');
+$config['current_theme']    = 'default_theme';
+$config['current_theme_path_segment'] = ($config['current_theme'] ? 'themes/' . $config['current_theme'].'/css/' : '');
 
 $config['asset_js_folder_name'] = 'js';
 $config['asset_img_folder_name'] = 'img';
@@ -33,9 +33,10 @@ $config['asset_img_folder_name'] = 'img';
 $config['js_url']	        = $config['base_url'].'asset/'.$config['asset_js_folder_name'].'/';
 $config['js_folder_name'] = 'js';
 
-$config['css_url']          = $config['base_url'].'asset/css/' . ( $config['current_theme'] ? 'themes/' . $config['current_theme'].'/css/' : '' );
+$config['css_url']          = $config['base_url'].'asset/' . ( $config['current_theme'] ? 'themes/' . $config['current_theme'].'/css/' : '' );
 $config['css_image_url']	= $config['css_url'] . $config['asset_img_folder_name'].'/';
-$config['css_path']         = $config['base_path'].'asset/css/' . ( $config['current_theme'] ? 'themes/' . $config['current_theme'].'/css/' : '' );
+$config['css_path']         = $config['base_path'].'asset/' . ( $config['current_theme'] ? 'themes/' . $config['current_theme'].'/css/' : '' );
+
 $config['css_parsed_path'] 	= $config['css_path'].'parsed/';
 $config['css_parsed_url'] 	= $config['css_url'] . 'parsed/';
 
@@ -82,7 +83,7 @@ $config['config_variables_for_js_file'] = array(
  * File paths are relative to the asset_path
  */
 $config['default_css_files'] = array(
-
+                            'style.css'
                         );
 
 
@@ -104,7 +105,7 @@ $config['common_asset_files_css'] = array(
 
 $config['common_asset_files_js'] = array(
                                     'common/js/common.js',
-									//'js/header_functionalities.js',
+
 
                         );
 
@@ -178,31 +179,6 @@ $config['no_reply_email_from']  = 'No Reply';
 $config['accounts_email_id']    = 'account@' . $config['website_domain_name']; // username/ password recovery emails are sent from this email id
 $config['accounts_email_from']  = 'Accounts - ' . $config['website_title'];
 
-/*
-|--------------------------------------------------------------------------
-| Upload Settings
-|--------------------------------------------------------------------------
-|
-*/
-
-$config['contact_us_upload_path'] 	= $config['base_path'].'uploads'.DS.'contact_us'.DS;
-$config['contact_us_upload_url'] 	= $config['base_url'].'uploads/contact_us/';
-$config['contact_us_allowed_types'] = '';
-
-$config['contact_us_upload_settings'] = array(
-
-	'upload_path'		=> $config['contact_us_upload_path'],
-	'allowed_types'		=> 'tgz|zip|rar|doc|pdf|gif|png|jpg|jpeg|docx|bmp|xlsx',
-	'types_description'	=> 'Image Files', //will appear in the drop-down box for "file types" field in the "select files" window
-	'file_name'			=> '',
-	'overwrite'			=> false,
-	'max_size'			=> 51200, //50MB
-	'max_filename'		=> 0,
-	'encrypt_name'		=> false,
-	'remove_spaces'		=> true,
-	'keep_original'		=> true,
-	'append_real_name'	=> true
-);
 
 
 /*
