@@ -45,7 +45,7 @@
 | the active record class
 */
 
-include('./../base_master_config.php');
+include('./../data_master_config.php');
 
 
 $active_group = ENVIRONMENT;

@@ -54,7 +54,7 @@ $autoload['packages'] = array(APPPATH.'third_party');
 */
 
 $autoload['libraries'] = array('database','session', 'form_validation', 'authentication');
-
+$autoload['drivers'] = array('session');
 /*
 | -------------------------------------------------------------------
 |  Auto-load Helper Files

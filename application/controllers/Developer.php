@@ -315,6 +315,71 @@ class Developer extends CI_Controller {
 
 	}
 
+	function read_objectives() {
+
+
+
+
+	     $this->load->library('excel');
+
+	     require_once APPPATH."/third_party/phpexcel/Classes/PHPExcel/IOFactory.php";
+	     $inputFileName = c('base_path') . 'asset/office_address/office_address.xlsx';
+
+
+	     $aData = array();
+
+	     //  Read your Excel workbook
+	     try {
+
+
+	        $inputFileType = PHPExcel_IOFactory::identify($inputFileName);
+	        $objReader = PHPExcel_IOFactory::createReader($inputFileType);
+	        $objReader->setReadDataOnly(false);
+
+	        $objPHPExcel = $objReader->load($inputFileName);
+
+
+	        //  Get worksheet dimensions
+	        $sheet 			= $objPHPExcel->getSheet(2);
+	        $highestRow 	= 25;
+	        //$highestColumn 	= $sheet->getHighestColumn();
+
+	        $iStartingRow = 2;
+
+	        //$highestRow = 8;
+
+
+
+	        //  Loop through each row of the worksheet in turn
+	        for ($row = $iStartingRow; $row <= $highestRow; $row++) {
+
+	                //  Read a row of data into an array
+	                $rowData = $sheet->rangeToArray('A' . $row . ':B' . $row,
+	                                                NULL,
+	                                                TRUE,
+	                                                FALSE);
+
+			$aData = array(
+				'title' => $rowData[0][0],
+				'website_link' =>$rowData[0][1],
+			);
+	                p($aData);
+
+			//$this->db->insert('departments' ,$aData);
+			//$this->db->insert('directorates' ,$aData);
+			$this->db->insert('boards' ,$aData);
+	        }
+
+
+	    } catch(Exception $e) {
+
+
+	        die('Error loading file "'.pathinfo($inputFileName,PATHINFO_BASENAME).'": '.$e->getMessage());
+	    }
+
+	}
+
+
 }
 
 /* End of file developer.php */

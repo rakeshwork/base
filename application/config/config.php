@@ -17,7 +17,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | environments.
 |
 */
-$config['base_url'] = 'http://localhost/base/';
+$config['base_url'] = 'http://localhost/damac/data_master/data/';
 
 
 /*
@@ -363,6 +363,7 @@ $config['sess_save_path'] = 'ci_sessions'; // sessions table name
 $config['sess_match_ip'] = FALSE;
 $config['sess_time_to_update'] = 300;
 $config['sess_regenerate_destroy'] = FALSE;
+
 
 /*
 |--------------------------------------------------------------------------

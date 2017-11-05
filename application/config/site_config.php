@@ -8,7 +8,7 @@
 |
 */
 
-include('./../base_master_config.php');
+include('./../data_master_config.php');
 
 
 define('DS',DIRECTORY_SEPARATOR); // defined here because 3rd party code like tinymce for eg, will need to include only one file for knowing the config

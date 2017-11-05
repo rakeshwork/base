@@ -33,6 +33,8 @@ class Data_model extends CI_Model{
 			'enquiry_purpose_statuses' 	=> 'enquiry_purpose_statuses',
 			'profile_picture_sources' 	=> 'profile_picture_sources',
 
+			//project Specific
+			'department_statuses' => 'department_statuses'
 
 		);
 
